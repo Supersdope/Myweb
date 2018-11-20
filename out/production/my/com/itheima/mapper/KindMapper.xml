@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.KindMapper">
+	<!-- 增加用户 -->
+	<insert id="addKind" parameterType="com.itheima.po.Kind">
+		insert into t_kind(kind_id,length,env,plantkind)
+		values(#{kind_id},#{length},#{env},#{plantkind})
+	</insert>
+	<!-- 删除用户 -->
+	<delete id="deleteKind" parameterType="Integer">
+		delete from t_kind
+		where id=#{id}
+	</delete>
+	<!-- 修改用户 -->
+	<update id="updateKind" parameterType="com.itheima.po.Kind">
+		update t_kind
+		<set>
+			<if test="length !=null and length !=''">
+				length=#{length},
+			</if>
+			<if test="env !=null and env !=''">
+				env=#{env},
+			</if>
+			<if test="plantkind !=null and plantkind !=''">
+				plantkind=#{plantkind},
+			</if>
+		</set>
+		where kind_id=#{kind_id}
+	</update>
+	<select id="findallKind" resultType="com.itheima.po.Kind">
+	SELECT * from t_kind
+	</select>
+	<select id="findKindByName" parameterType="String"
+			resultType="com.itheima.po.Kind">
+		select * from t_kind where kind_id like '%${value}%'
+
+	</select>
+
+	<select id="findAllByKindId" parameterType="Integer"
+			resultType="com.itheima.po.Kind">
+		select * from t_kind where kind_id = #{kind_id}
+	</select>
+</mapper>

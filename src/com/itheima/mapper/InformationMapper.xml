@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.InformationMapper">
+	<!-- 种植 -->
+	<insert id="addInformation" parameterType="com.itheima.po.Information">
+		insert into t_information(uname,gender,age,phone,time,pname,kind_id)
+		values(#{uname},#{gender},#{age},#{phone},#{time},#{pname},#{kind_id})
+	</insert>
+	<insert id="bsaddInformation" parameterType="com.itheima.po.Information">
+		insert into t_information(uname,gender,age,phone,time,pname,kind_id)
+		values(#{uname},#{gender},#{age},#{phone},#{time},#{pname},#{kind_id})
+	</insert>
+
+	<!-- 删除 -->
+	<delete id="deleteInformation" parameterType="Integer">
+		delete from t_information
+		where id=#{id}
+	</delete>
+	<!-- 修改 -->
+	<update id="updateInformation" parameterType="com.itheima.po.Information">
+		update t_information
+		<set>
+			<if test="gender!=null and gender!=''">
+				gender=#{gender},
+			</if>
+			<if test="age !=null and age!=''">
+				age=#{age},
+			</if>
+			<if test="phone !=null and  phone!=''">
+				phone=#{phone},
+			</if>
+			<if test="time!=null and  time!=''">
+				time=#{time},
+			</if>
+			<if test="pname!=null and  pname!=''">
+				pname=#{pname},
+			</if>
+			<if test="kind_id!=null and kind_id!=''">
+				kind_id=#{kind_id},
+			</if>
+	</set>
+		where uname=#{uname}
+	</update>
+	<select id="findallinformation" resultType="com.itheima.po.Information">
+		SELECT * from t_information
+	</select>
+	<select id="findInformationByName" parameterType="String"
+			resultType="com.itheima.po.Information">
+		select * from t_information where uname like '%${value}%'
+
+	</select>
+
+	<resultMap type="com.itheima.po.Information" id="A">
+		<id property="id" column="id"/>
+		<result property="uname" column="uname"/>
+		<result property="gender" column="gender"/>
+		<result property="age" column="age"/>
+		<result property="time" column="time"/>
+		<result property="phone" column="phone"/>
+		<result property="pname" column="pname"/>
+		<result property="kind_id" column="kind_id"/>
+		<association property="kind"  javaType="com.itheima.po.Kind" >
+			<id property="id" column="id"/>
+			<result property="kind_id" column="kind_id"/>
+			<result property="length" column="length"/>
+			<result property="env" column="env"/>
+			<result property="plantkind" column="plantkind"/>
+
+		</association>
+	</resultMap>
+
+	<select id="findAllIAK" parameterType="com.itheima.po.Information" resultMap="A">
+		SELECT  innfor.*,kind.*
+		FROM t_information innfor , t_kind kind
+		WHERE innfor.kind_id = kind.kind_id
+
+
+	</select>
+</mapper>

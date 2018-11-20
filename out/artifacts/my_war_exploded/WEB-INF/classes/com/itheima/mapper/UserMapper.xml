@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.UserMapper">
+	<!-- 增加用户 -->
+	<insert id="addUser" parameterType="com.itheima.po.User">
+		insert into t_user(name,password,email,city,phone)
+		values(#{name},#{password},#{email},#{city},#{phone})
+	</insert>
+	<insert id="bsaddUser" parameterType="com.itheima.po.User">
+		insert into t_user(name,password,email,city,phone)
+		values(#{name},#{password},#{email},#{city},#{phone})
+	</insert>
+	<!-- 删除用户 -->
+	<delete id="deleteUser" parameterType="Integer">
+		delete from t_user
+		where id=#{id}
+	</delete>
+	<!-- 修改用户 -->
+	<update id="updateUser" parameterType="com.itheima.po.User">
+		update t_user
+		<set>
+			<if test="password !=null and password !=''">
+				password=#{password},
+			</if>
+			<if test="email !=null and email !=''">
+				email=#{email},
+			</if>
+			<if test="city !=null and city !=''">
+			city=#{city},
+		</if>
+			<if test="phone !=null and phone !=''">
+				phone=#{phone},
+			</if>
+		</set>
+		where name=#{name}
+	</update>
+	<select id="login" resultType="com.itheima.po.User">
+		SELECT * from t_user where  name = '${name}' and password = '${password}'
+ 	</select>
+	<select id="findalluser" resultType="com.itheima.po.User">
+	SELECT * from t_user
+	</select>
+	<select id="findall" resultType="com.itheima.po.User">
+		SELECT * from t_user
+	</select>
+	<select id="findUserByName" parameterType="String"
+			resultType="com.itheima.po.User">
+		select * from t_user where name like '%${value}%'
+
+	</select>
+</mapper>
